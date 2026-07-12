@@ -9,3 +9,4 @@ export * from './components/MedicalDialog';
 export * from './components/MedicalProgressbar';
 export * from './components/MedicalCalendar';
 export * from './constants/index';
+export * from './components/MedicalMessage';
