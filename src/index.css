@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+/* eslint-disable-next-line */
+@custom-variant dark (&:where(.p-dark, .p-dark *));
+
+/* Medical button base styles */
+.medical-button {
+	transition: color 0.3s, background-color 0.3s, border-color 0.3s ease-in-out;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+}
+
+.medical-progressbar {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	width: 100%;
+	max-width: 100%;
+}
+
+.medical-progressbar__label {
+	font-weight: 600;
+	color: #111827;
+	font-size: 0.95rem;
+}
+
+.medical-progressbar__track {
+	background: #e5e7eb;
+	border-radius: 999px;
+	overflow: hidden;
+	height: 1rem;
+	position: relative;
+}
+
+.medical-progressbar--sm .medical-progressbar__track {
+	height: 0.75rem;
+}
+
+.medical-progressbar--lg .medical-progressbar__track {
+	height: 1.5rem;
+}
+
+.medical-progressbar__value {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	padding-right: 0.5rem;
+	color: #ffffff;
+	font-size: 0.75rem;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.medical-progressbar__fill-label {
+	font-size: 0.75rem;
+	font-weight: 600;
+}
+
+.medical-progressbar__value-label {
+	font-size: 0.9rem;
+	color: #4b5563;
+}
+
+.medical-progressbar--indeterminate .medical-progressbar__value {
+	width: 40% !important;
+	animation: medical-progressbar-indeterminate 1.5s infinite ease-in-out;
+}
+
+@keyframes medical-progressbar-indeterminate {
+	0% {
+		transform: translateX(-100%);
+	}
+	100% {
+		transform: translateX(200%);
+	}
+}
+
+.medical-button--sm {
+	font-size: 14px;
+	padding: 6px 12px;
+}
+.medical-button--md {
+	font-size: 16px;
+	padding: 8px 16px;
+}
+.medical-button--lg {
+	font-size: 20px;
+	padding: 10px 20px;
+}
+
+.medical-button--primary {
+	background-color: #00B0CA;
+	color: #ffffff;
+	border: 1px solid #00B0CA;
+}
+
+.medical-button--secondary {
+	background-color: #C2DF0A;
+	color: #111827;
+	border: 1px solid #C2DF0A;
+}
+
+.medical-button--tertiary {
+	background-color: #511E84;
+	color: #ffffff;
+	border: 1px solid #511E84;
+}
+
+.medical-button--block {
+	width: 100%;
+}
+
+@media (max-width: 480px) {
+	.medical-button--block {
+		width: 100% !important;
+	}
+}
+
+.medical-button__icon {
+	width: 1em;
+	height: 1em;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.medical-button__icon svg {
+	width: 1em;
+	height: 1em;
+}

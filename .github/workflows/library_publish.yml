@@ -1,0 +1,108 @@
+name: Ourlimm Library Node Package
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    environment: OURLIMM-ENVIROMENT
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build package
+        run: npm run build
+
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-build
+          path: |
+            dist
+            package.json
+            package-lock.json
+            .npmrc
+
+  delete-package-version:
+    runs-on: ubuntu-latest
+
+    environment: OURLIMM-ENVIROMENT
+
+    needs: build
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Delete package version
+        env:
+          GH_TOKEN: ${{ secrets.LIBRARY_TOKEN }}
+          OWNER: DaniUTP
+          PACKAGE_NAME: medical-kit
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+
+          if ! gh api /users/$OWNER/packages/npm/$PACKAGE_NAME > /dev/null 2>&1; then
+            exit 0
+          fi
+
+          VERSION_ID=$(gh api \
+            /users/$OWNER/packages/npm/$PACKAGE_NAME/versions \
+            --jq ".[] | select(.name==\"$VERSION\") | .id")
+
+          if [ -n "$VERSION_ID" ]; then
+            gh api \
+              -X DELETE \
+              /users/$OWNER/packages/npm/$PACKAGE_NAME/versions/$VERSION_ID
+          fi
+
+  publish:
+    runs-on: ubuntu-latest
+
+    environment: OURLIMM-ENVIROMENT
+
+    needs:
+      - build
+      - delete-package-version
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download build
+        uses: actions/download-artifact@v4
+        with:
+          name: package-build
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://npm.pkg.github.com
+          scope: "@DaniUTP"
+
+      - name: Publish package
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.LIBRARY_TOKEN }}
