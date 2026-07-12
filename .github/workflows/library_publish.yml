@@ -1,4 +1,4 @@
-name: Ourlimm Library Node Package
+name: Ourlimm Library
 
 on:
   push:
