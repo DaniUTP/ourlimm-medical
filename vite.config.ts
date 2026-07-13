@@ -9,20 +9,30 @@ const stripRequirePolyfillPlugin: Plugin = {
   generateBundle(options, bundle) {
     for (const [fileName, file] of Object.entries(bundle)) {
       if (fileName.endsWith('.js')) {
-        let code = file.type === 'asset' ? file.source : file.code;
-        if (typeof code !== 'string') continue;
+        let code: string;
         
-        // Remove the __require polyfill and rolldown runtime region
-        code = code.replace(
-          /\/\/#region \\0rolldown\/runtime\.js[\s\S]*?\/\/#endregion\n?/g,
-          '// ESM-only bundle: require polyfill removed\n'
-        );
+        if (file.type === 'asset') {
+          code = String(file.source);
+        } else if (file.type === 'chunk') {
+          code = file.code;
+        } else {
+          continue;
+        }
         
-        // Also remove any standalone __require declaration if present
-        code = code.replace(
-          /var __require\s*=\s*\/\*[\s\S]*?\}\);?\n?/g,
-          ''
-        );
+        // Find and remove the require polyfill by looking for the error message unique to it
+        if (code.includes('Calling `require`')) {
+          const callRequireIdx = code.indexOf('Calling `require`');
+          const endIdx = code.indexOf('});', callRequireIdx);
+          
+          if (callRequireIdx !== -1 && endIdx !== -1) {
+            // Find the start of the variable declaration before this
+            let varStart = code.lastIndexOf(',', callRequireIdx);
+            if (varStart !== -1) {
+              // Remove from the comma to after the closing });
+              code = code.substring(0, varStart) + code.substring(endIdx + 3);
+            }
+          }
+        }
         
         if (file.type === 'asset') {
           file.source = code;
