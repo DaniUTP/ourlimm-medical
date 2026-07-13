@@ -15,14 +15,16 @@ export default defineConfig({
     },
     emptyOutDir: false,
     rollupOptions: {
-      external: ['react', 'react-dom', 'primereact', 'primeicons', 'lucide-react'],
+      external: ['react', 'react-dom', 'primereact', 'primeicons', 'lucide-react', 'primeflex', 'tailwindcss'],
       output: {
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
           primereact: 'PrimeReact',
           primeicons: 'PrimeIcons',
-          'lucide-react': 'LucideReact'
+          'lucide-react': 'LucideReact',
+          primeflex: 'PrimeFlex',
+          tailwindcss: 'tailwindcss'
         }
       }
     }
