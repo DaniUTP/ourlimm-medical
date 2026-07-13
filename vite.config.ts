@@ -15,7 +15,11 @@ export default defineConfig({
     emptyOutDir: false,
     minify: true,
     rollupOptions: {
-      external: ['react', 'react-dom', 'primereact', 'primeicons', 'lucide-react', 'primeflex', 'tailwindcss']
+      external: ['react', 'react-dom', 'primereact', 'primeicons', 'lucide-react', 'primeflex', 'tailwindcss'],
+      output: {
+        format: 'es',
+        exports: 'named'
+      }
     }
   }
 })
