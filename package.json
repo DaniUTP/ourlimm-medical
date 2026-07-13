@@ -9,13 +9,12 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
-  "main": "./dist/ourlimm-medic-ui.umd.cjs",
+  "main": "./dist/ourlimm-medic-ui.js",
   "module": "./dist/ourlimm-medic-ui.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/ourlimm-medic-ui.js",
-      "require": "./dist/ourlimm-medic-ui.umd.cjs",
       "types": "./dist/index.d.ts"
     }
   },
