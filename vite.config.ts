@@ -11,17 +11,18 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'OurlimmMedicUI',
       fileName: 'ourlimm-medic-ui',
-      formats: ['es', 'umd']
+      formats: ['es']
     },
     emptyOutDir: false,
     rollupOptions: {
-      external: ['react', 'react-dom', 'primereact', 'primeicons'],
+      external: ['react', 'react-dom', 'primereact', 'primeicons', 'lucide-react'],
       output: {
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
           primereact: 'PrimeReact',
-          primeicons: 'PrimeIcons'
+          primeicons: 'PrimeIcons',
+          'lucide-react': 'LucideReact'
         }
       }
     }
